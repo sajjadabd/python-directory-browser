@@ -11,6 +11,7 @@ import subprocess
 
 
 result = []
+backUpResult = []
 
 class PlaceholderEntry(tk.Entry):
     def __init__(self, master=None, placeholder='', cnf={}, fg='black',
@@ -54,6 +55,9 @@ style.configure("Treeview", font=(None, 10))
 
 topFrame = ttk.Frame(root )
 
+# create a treeview
+tree = ttk.Treeview(root , show="tree")
+
 def OnDoubleClick(event):
     global result
     item = tree.selection()
@@ -66,6 +70,10 @@ def OnDoubleClick(event):
 def add_data() :
     global result
     length = len(result)
+
+    for i in tree.get_children():
+        tree.delete(i)
+
     counter = 0
     while counter < length :
         tree.insert('', tk.END, text=result[counter], iid=counter, open=False )
@@ -78,6 +86,7 @@ def add_data() :
     # tree.move(6, 0, 1)
 
 def openfile():
+    global backUpResult
     global result
     result = []
     path = filedialog.askdirectory()
@@ -86,6 +95,7 @@ def openfile():
     result = glob.glob(path + '/**/*', recursive=True)
     #print(result)
     add_data()
+    backUpResult = result
     #return filedialog.askopenfilename()
 
 label = ttk.Label(topFrame , text='select folder to load directories ...' , font=("Calibri",12) )
@@ -101,19 +111,48 @@ topFrame.pack(  fill='both' )
 
 sv = tkinter.StringVar()
 
-def callback(sv):
-    print(sv.get())
+def return_pressed(event):
+    global result
+    global backUpResult
+
+    searchString = str(search.get())
+
+    print(searchString)
+
+    if( searchString.strip() == '' ) :
+        result = backUpResult
+        add_data()
+        return
+
+
+    length = len(result)
+    
+    filteredResult = []
+    counter = 0
+
+    while counter < length : 
+        print(result[counter].find(searchString))
+        if( result[counter].find(searchString) != -1 ) :
+            filteredResult.append(result[counter])
+        else :
+            pass
+        counter += 1
+    
+    result = filteredResult
+    add_data()
+     
 
 sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
 #create search bar
-search = PlaceholderEntry(root , textvariable=sv , placeholder='search here ...' , font=("Calibri",12))
+search = ttk.Entry(root  , font=("Calibri",12))
 #search.bind('<Return>', return_pressed)
+search.bind('<KeyRelease>', return_pressed)
 
 search.pack(fill="both")
 
-# create a treeview
-tree = ttk.Treeview(root , show="tree")
+
 #tree.heading('#0', text='', anchor=tk.W)
+#tree.bind("<Double-1>", OnDoubleClick)
 tree.bind("<Double-1>", OnDoubleClick)
 
 
