@@ -58,6 +58,10 @@ topFrame = ttk.Frame(root )
 # create a treeview
 tree = ttk.Treeview(root , show="tree")
 
+vsb = ttk.Scrollbar(orient="vertical",command=tree.yview)
+vsb.pack( side=tkinter.RIGHT , fill='both' )
+tree.configure(yscrollcommand=vsb.set)
+
 def OnDoubleClick(event):
     global result
     item = tree.selection()
@@ -90,13 +94,17 @@ def openfile():
     global result
     result = []
     path = filedialog.askdirectory()
-    #print(path)
-    label.config(text=path)
-    result = glob.glob(path + '/**/*', recursive=True)
-    #print(result)
-    add_data()
-    backUpResult = result
-    #return filedialog.askopenfilename()
+    #print(f"#{path}#")
+    if( path.strip() == '' ) :
+        pass
+    else :
+        label.config(text=path)
+        result = glob.glob(path + '/**/*', recursive=True)
+        #print(result)
+        add_data()
+        backUpResult = result
+        #return filedialog.askopenfilename()
+    
 
 label = ttk.Label(topFrame , text='select folder to load directories ...' , font=("Calibri",12) )
 button = ttk.Button(topFrame , text = 'browse' , command=openfile)
@@ -132,7 +140,7 @@ def return_pressed(event):
 
     while counter < length : 
         #print(result[counter].find(searchString))
-        if( result[counter].find(searchString) != -1 ) :
+        if( (result[counter].lower()).find(searchString.lower()) != -1 ) :
             filteredResult.append(result[counter])
         else :
             pass
