@@ -99,8 +99,15 @@ button.pack( expand=False  , fill='none'  , side=tkinter.RIGHT  , anchor=tkinter
 
 topFrame.pack(  fill='both' )
 
+sv = tkinter.StringVar()
+
+def callback(sv):
+    print(sv.get())
+
+sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
 #create search bar
-search = PlaceholderEntry(root , placeholder='search here ...' , font=("Calibri",12))
+search = PlaceholderEntry(root , textvariable=sv , placeholder='search here ...' , font=("Calibri",12))
+#search.bind('<Return>', return_pressed)
 
 search.pack(fill="both")
 
