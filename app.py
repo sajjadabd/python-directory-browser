@@ -43,7 +43,7 @@ class PlaceholderEntry(tk.Entry):
 # create root window
 root = tk.Tk()
 root.title('Treeview Demo - Hierarchical Data')
-root.geometry('400x200')
+root.geometry('500x400')
 
 # configure the grid layout
 root.rowconfigure(0, weight=1)
