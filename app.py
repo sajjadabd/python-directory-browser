@@ -98,6 +98,7 @@ def openfile():
     if( path.strip() == '' ) :
         pass
     else :
+        search.delete(0,tkinter.END)
         result = glob.glob(path + '/**/*', recursive=True)
         #print(result)
         add_data()
