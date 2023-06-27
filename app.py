@@ -98,11 +98,11 @@ def openfile():
     if( path.strip() == '' ) :
         pass
     else :
-        label.config(text=path)
         result = glob.glob(path + '/**/*', recursive=True)
         #print(result)
         add_data()
         backUpResult = result
+        label.config(text=(path + f" ({len(result)} files)"))
         #return filedialog.askopenfilename()
     
 
@@ -119,9 +119,15 @@ topFrame.pack(  fill='both' )
 
 sv = tkinter.StringVar()
 
+searchString = ''
+
 def return_pressed(event):
     global result
     global backUpResult
+    global searchString
+
+    if ( len(searchString) > len( str(search.get()) ) ) :
+        result = backUpResult
 
     searchString = str(search.get())
 
@@ -131,6 +137,8 @@ def return_pressed(event):
         result = backUpResult
         add_data()
         return
+    
+    
 
 
     length = len(result)
