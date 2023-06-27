@@ -63,7 +63,7 @@ def OnDoubleClick(event):
     item = tree.selection()
     index = int(item[0])
     path = result[index].replace("/" , "\\")
-    print(path)
+    #print(path)
     subprocess.Popen(f"explorer /select, \"{path}\"")
     #print("you clicked on", tree.item(i, "values"))
 
@@ -117,7 +117,7 @@ def return_pressed(event):
 
     searchString = str(search.get())
 
-    print(searchString)
+    #print(searchString)
 
     if( searchString.strip() == '' ) :
         result = backUpResult
@@ -131,7 +131,7 @@ def return_pressed(event):
     counter = 0
 
     while counter < length : 
-        print(result[counter].find(searchString))
+        #print(result[counter].find(searchString))
         if( result[counter].find(searchString) != -1 ) :
             filteredResult.append(result[counter])
         else :
