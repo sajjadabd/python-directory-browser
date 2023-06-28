@@ -53,6 +53,9 @@ root.columnconfigure(0, weight=1)
 
 style = ttk.Style()
 style.configure("Treeview", font=(None, 10))
+#style.theme_use("step")
+
+#('aqua', 'step', 'clam', 'alt', 'default', 'classic')
 
 topFrame = ttk.Frame(root )
 
@@ -112,6 +115,37 @@ def add_data() :
     tree.move('item4', 'item1', 'end')
     """
     
+    backgroundColors = [ 'blue' , 'black' , 
+    '#03045e' , 
+    '#023e8a' , 
+    '#0077b6' , 
+    '#0096c7' ,
+    '#00b4d8' ,
+    '#48cae4' ,
+    '#90e0ef' ,
+    '#ade8f4' ,
+    ]
+
+    backgroundColors = [ 'blue' , 'black' , 
+    '#03045e' , 
+    '#0077b6' , 
+    '#ade8f4' , ##
+    '#90e0ef' ,
+    '#ade8f4' ,
+    ]
+
+
+    foregroundColors = [ 'black' , 'black' , 
+    'white' , 
+    'white' , 
+    'black' ,
+    'black' ,
+    'black' ,
+    'black' ,
+    'black' ,
+    ]
+
+    style.map('Treeview',  background=[('selected', 'orange')] , foreground=[('selected', 'black')])
 
     counter = 0
     while counter < length :
@@ -119,7 +153,9 @@ def add_data() :
         parentArray = thePath.split('\\')
         #print(parentArray)
         try :
-            tree.insert(parentArray[len(parentArray)-1-1], tk.END, iid = parentArray[len(parentArray)-1] , text=parentArray[len(parentArray)-1], open=False , tags = thePath )
+            theIndex = len(parentArray)
+            tree.insert(parentArray[theIndex-1-1], tk.END, iid = parentArray[len(parentArray)-1] , text=parentArray[theIndex-1], open=False , tags = (theIndex) )
+            tree.tag_configure( theIndex , background = backgroundColors[theIndex] , foreground = foregroundColors[theIndex])
         except :
             pass
         counter += 1
@@ -233,7 +269,8 @@ tree.bind("<Double-1>", OnDoubleClick)
 
 # place the Treeview widget on the root window
 #tree.grid(row=1, column=0, sticky=tk.NSEW )
-tree.pack(fill="both" , expand=True)
+#tree.pack( anchor=tk.NW , fill="y" , expand=True)
+tree.pack( fill="both" , expand=True)
 
 # run the app
 root.mainloop()
