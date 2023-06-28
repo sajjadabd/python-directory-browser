@@ -12,6 +12,7 @@ import subprocess
 
 result = []
 backUpResult = []
+path = ''
 
 class PlaceholderEntry(tk.Entry):
     def __init__(self, master=None, placeholder='', cnf={}, fg='black',
@@ -73,6 +74,7 @@ def OnDoubleClick(event):
 
 def add_data() :
     global result
+    global path
     length = len(result)
 
     for i in tree.get_children():
@@ -80,7 +82,7 @@ def add_data() :
 
     counter = 0
     while counter < length :
-        tree.insert('', tk.END, text=result[counter], iid=counter, open=False )
+        tree.insert('', tk.END, text=result[counter].replace( path , ''), iid=counter, open=False )
         counter += 1
 
     # adding children of first node
@@ -92,6 +94,7 @@ def add_data() :
 def openfile():
     global backUpResult
     global result
+    global path
     result = []
     path = filedialog.askdirectory()
     #print(f"#{path}#")
