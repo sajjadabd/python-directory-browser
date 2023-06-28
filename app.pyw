@@ -50,9 +50,12 @@ root.geometry('500x400')
 root.rowconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
 
+rowHeight = 22
+fontSize = 11
 
 style = ttk.Style()
-style.configure("Treeview", font=(None, 10))
+style.configure("Treeview", font=(None, fontSize))
+style.configure('Treeview', rowheight=rowHeight)
 #style.theme_use("step")
 
 #('aqua', 'step', 'clam', 'alt', 'default', 'classic')
