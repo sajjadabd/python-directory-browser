@@ -103,7 +103,7 @@ backgroundColors = [ 'blue' ,
     '#0077b6' , 
     '#90e0ef' , ##
     '#ade8f4' ,
-    '#ade8f4' ,
+    '#fff' ,
     ]
 
 
@@ -123,18 +123,35 @@ def checkToSeeIfThereIsParents(parentArray , theIndex , currentIndex , parrantIn
     global tree
     global backgroundColors
     global foregroundColors
-
-    try :
+    
+    
+    if ( currentIndex == 0 ) :
+        return
+    else :
         try :
-            tree.insert(parentArray[parrantIndex], tk.END, iid = parentArray[currentIndex] , text=parentArray[currentIndex], open=False , tags = (currentIndex) )
+            print('try : ' , f'{parentArray[parrantIndex]}' , parentArray[currentIndex] , currentIndex , parrantIndex )
+            checkToSeeIfThereIsParents(parentArray , theIndex - 1 , currentIndex - 1 , parrantIndex - 1 )
+            tree.insert( parentArray[parrantIndex], tk.END, iid = parentArray[currentIndex] , text=parentArray[currentIndex], open=False , tags = (currentIndex) )
             tree.tag_configure( theIndex-1 , background = backgroundColors[theIndex-1] , foreground = foregroundColors[theIndex-1])
         except : 
-            #tree.insert(parentArray[theIndex-1-2], tk.END, iid = parentArray[len(parentArray)-1-1] , text=parentArray[theIndex-1-1], open=False , tags = (theIndex) )
-            #counter-=1
-            checkToSeeIfThereIsParents(parentArray , theIndex - 1 , currentIndex - 1 , parrantIndex - 1)
-    except :
-        pass
-
+            pass
+    """
+    try :
+        print('try : ' , f'{parentArray[parrantIndex]}' , parentArray[currentIndex] , currentIndex , parrantIndex )
+        if ( currentIndex == 0 ) :
+            return
+        else :
+            tree.insert( parentArray[parrantIndex], tk.END, iid = parentArray[currentIndex] , text=parentArray[currentIndex], open=False , tags = (currentIndex) )
+            tree.tag_configure( theIndex-1 , background = backgroundColors[theIndex-1] , foreground = foregroundColors[theIndex-1])
+    except : 
+        #tree.insert(parentArray[theIndex-1-2], tk.END, iid = parentArray[len(parentArray)-1-1] , text=parentArray[theIndex-1-1], open=False , tags = (theIndex) )
+        #counter-=1
+        print('error : ' , parentArray[parrantIndex] , parentArray[currentIndex] , currentIndex , parrantIndex )
+        if ( currentIndex == 0 ) :
+            return
+        else :
+            checkToSeeIfThereIsParents(parentArray , theIndex - 1 , currentIndex - 1 , parrantIndex - 1 )
+    """
 
 def add_data() :
     global result
