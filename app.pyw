@@ -118,7 +118,10 @@ def add_data() :
         thePath = result[counter].replace( path , '' )
         parentArray = thePath.split('\\')
         #print(parentArray)
-        tree.insert(parentArray[len(parentArray)-1-1], tk.END, iid = parentArray[len(parentArray)-1] , text=parentArray[len(parentArray)-1], open=False , tags = thePath )
+        try :
+            tree.insert(parentArray[len(parentArray)-1-1], tk.END, iid = parentArray[len(parentArray)-1] , text=parentArray[len(parentArray)-1], open=False , tags = thePath )
+        except :
+            pass
         counter += 1
 
     # adding children of first node
