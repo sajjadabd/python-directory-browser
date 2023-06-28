@@ -84,10 +84,64 @@ def OnDoubleClick(event):
     subprocess.Popen(f"explorer /select, \"{path}\"")
     #print("you clicked on", tree.item(i, "values"))
 
+
+"""
+backgroundColors = [ 'blue' , 'black' , 
+    '#03045e' , 
+    '#023e8a' , 
+    '#0077b6' , 
+    '#0096c7' ,
+    '#00b4d8' ,
+    '#48cae4' ,
+    '#90e0ef' ,
+    '#ade8f4' ,
+    ]
+"""
+
+backgroundColors = [ 'blue' , 
+    '#023e8a' , 
+    '#0077b6' , 
+    '#90e0ef' , ##
+    '#ade8f4' ,
+    '#ade8f4' ,
+    ]
+
+
+foregroundColors = [ 'black' , 
+    'white' , 
+    'white' , 
+    'black' ,
+    'black' ,
+    'black' ,
+    'black' ,
+    'black' ,
+    ]
+
+
+def checkToSeeIfThereIsParents(parentArray , theIndex , currentIndex , parrantIndex) :
+    global result
+    global tree
+    global backgroundColors
+    global foregroundColors
+
+    try :
+        try :
+            tree.insert(parentArray[parrantIndex], tk.END, iid = parentArray[currentIndex] , text=parentArray[currentIndex], open=False , tags = (currentIndex) )
+            tree.tag_configure( theIndex-1 , background = backgroundColors[theIndex-1] , foreground = foregroundColors[theIndex-1])
+        except : 
+            #tree.insert(parentArray[theIndex-1-2], tk.END, iid = parentArray[len(parentArray)-1-1] , text=parentArray[theIndex-1-1], open=False , tags = (theIndex) )
+            #counter-=1
+            checkToSeeIfThereIsParents(parentArray , theIndex - 1 , currentIndex - 1 , parrantIndex - 1)
+    except :
+        pass
+
+
 def add_data() :
     global result
     global path
     global tree
+    global backgroundColors
+    global foregroundColors
 
     length = len(result)
 
@@ -117,35 +171,7 @@ def add_data() :
     tree.move('item4', 'item1', 'end')
     """
     
-    backgroundColors = [ 'blue' , 'black' , 
-    '#03045e' , 
-    '#023e8a' , 
-    '#0077b6' , 
-    '#0096c7' ,
-    '#00b4d8' ,
-    '#48cae4' ,
-    '#90e0ef' ,
-    '#ade8f4' ,
-    ]
-
-    backgroundColors = [ 'blue' , 'black' , 
-    '#023e8a' , 
-    '#0077b6' , 
-    '#90e0ef' , ##
-    '#ade8f4' ,
-    '#ade8f4' ,
-    ]
-
-
-    foregroundColors = [ 'black' , 'black' , 
-    'white' , 
-    'white' , 
-    'black' ,
-    'black' ,
-    'black' ,
-    'black' ,
-    'black' ,
-    ]
+    
 
     style.map('Treeview',  background=[('selected', 'orange')] , foreground=[('selected', 'black')])
 
@@ -153,16 +179,11 @@ def add_data() :
     while counter < length :
         thePath = result[counter].replace( path , '' )
         parentArray = thePath.split('\\')
+        theIndex = len(parentArray)
+        currentIndex = theIndex - 1
+        parrantIndex = theIndex - 1 - 1
         #print(parentArray)
-        try :
-            theIndex = len(parentArray)
-            tree.insert(parentArray[theIndex-1-1], tk.END, iid = parentArray[len(parentArray)-1] , text=parentArray[theIndex-1], open=False , tags = (theIndex) )
-            tree.tag_configure( theIndex , background = backgroundColors[theIndex] , foreground = foregroundColors[theIndex])
-        except : 
-            tree.insert(parentArray[theIndex-1-2], tk.END, iid = parentArray[len(parentArray)-1-1] , text=parentArray[theIndex-1-1], open=False , tags = (theIndex) )
-            counter-=1
-            pass
-        
+        checkToSeeIfThereIsParents(parentArray , theIndex , currentIndex , parrantIndex)
         counter += 1
 
     # adding children of first node
@@ -233,7 +254,7 @@ def searchTheTable() :
     print('----------------------------------')
     while counter < length : 
         #print(result[counter].find(searchString))
-        if( (result[counter].lower()).find(searchString.lower()) != -1 ) :
+        if( (result[counter].replace(path , '').lower()).find(searchString.lower()) != -1 ) :
             print(result[counter])
             filteredResult.append(result[counter])
         else :
