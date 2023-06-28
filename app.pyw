@@ -64,11 +64,20 @@ vsb.pack( side=tkinter.RIGHT , fill='both' )
 tree.configure(yscrollcommand=vsb.set)
 
 def OnDoubleClick(event):
+    global searchString
     global result
+    global filteredResult
+    global backUpResult
+
+    result = backUpResult
+
     item = tree.selection()
-    index = int(item[0])
-    path = result[index].replace("/" , "\\")
-    #print(path)
+    index = item[0]
+    print(index)
+    searchString = index
+    path = searchTheTable()
+    path = path[0].replace("/" , "\\")
+    print(path)
     subprocess.Popen(f"explorer /select, \"{path}\"")
     #print("you clicked on", tree.item(i, "values"))
 
@@ -80,9 +89,36 @@ def add_data() :
     for i in tree.get_children():
         tree.delete(i)
 
+
+    """
+    tree.insert('', 'end', 'item1',text ='GeeksforGeeks')
+ 
+    # Inserting child
+    tree.insert('', 'end', 'item2',text ='Computer Science')
+    tree.insert('', 'end', 'item3',text ='GATE papers')
+    tree.insert('', 'end', 'item4',text ='Programming Languages')
+
+    # Inserting more than one attribute of an item
+    tree.insert('item2', 'end', 'Algorithm',text ='Algorithm') 
+    tree.insert('item2', 'end', 'Data structure',text ='Data structure')
+    tree.insert('item3', 'end', '2018 paper',text ='2018 paper') 
+    tree.insert('item3', 'end', '2019 paper',text ='2019 paper')
+    tree.insert('item4', 'end', 'Python',text ='Python')
+    tree.insert('item4', 'end', 'Java',text ='Java')
+
+    # Placing each child items in parent widget
+    tree.move('item2', 'item1', 'end')
+    tree.move('item3', 'item1', 'end')
+    tree.move('item4', 'item1', 'end')
+    """
+    
+
     counter = 0
     while counter < length :
-        tree.insert('', tk.END, text=result[counter].replace( path , ''), iid=counter, open=False )
+        thePath = result[counter].replace( path , '' )
+        parentArray = thePath.split('\\')
+        #print(parentArray)
+        tree.insert(parentArray[len(parentArray)-1-1], tk.END, iid = parentArray[len(parentArray)-1] , text=parentArray[len(parentArray)-1], open=False , tags = thePath )
         counter += 1
 
     # adding children of first node
@@ -125,6 +161,32 @@ sv = tkinter.StringVar()
 
 searchString = ''
 
+
+
+def searchTheTable() :
+    global result
+    global filteredResult
+    global searchString
+
+    length = len(result)
+    
+    filteredResult = []
+    counter = 0
+
+    while counter < length : 
+        #print(result[counter].find(searchString))
+        if( (result[counter].lower()).find(searchString.lower()) != -1 ) :
+            filteredResult.append(result[counter])
+        else :
+            pass
+        counter += 1
+    
+    result = filteredResult
+    return result
+
+
+
+
 def return_pressed(event):
     global result
     global backUpResult
@@ -142,23 +204,9 @@ def return_pressed(event):
         add_data()
         return
     
-    
 
+    searchTheTable()
 
-    length = len(result)
-    
-    filteredResult = []
-    counter = 0
-
-    while counter < length : 
-        #print(result[counter].find(searchString))
-        if( (result[counter].lower()).find(searchString.lower()) != -1 ) :
-            filteredResult.append(result[counter])
-        else :
-            pass
-        counter += 1
-    
-    result = filteredResult
     add_data()
      
 
