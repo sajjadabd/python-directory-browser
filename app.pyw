@@ -127,10 +127,10 @@ def add_data() :
     ]
 
     backgroundColors = [ 'blue' , 'black' , 
-    '#03045e' , 
+    '#023e8a' , 
     '#0077b6' , 
-    '#ade8f4' , ##
-    '#90e0ef' ,
+    '#90e0ef' , ##
+    '#ade8f4' ,
     '#ade8f4' ,
     ]
 
