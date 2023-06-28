@@ -87,6 +87,8 @@ def OnDoubleClick(event):
 def add_data() :
     global result
     global path
+    global tree
+
     length = len(result)
 
     for i in tree.get_children():
@@ -156,8 +158,11 @@ def add_data() :
             theIndex = len(parentArray)
             tree.insert(parentArray[theIndex-1-1], tk.END, iid = parentArray[len(parentArray)-1] , text=parentArray[theIndex-1], open=False , tags = (theIndex) )
             tree.tag_configure( theIndex , background = backgroundColors[theIndex] , foreground = foregroundColors[theIndex])
-        except :
+        except : 
+            tree.insert(parentArray[theIndex-1-2], tk.END, iid = parentArray[len(parentArray)-1-1] , text=parentArray[theIndex-1-1], open=False , tags = (theIndex) )
+            counter-=1
             pass
+        
         counter += 1
 
     # adding children of first node
@@ -201,27 +206,44 @@ sv = tkinter.StringVar()
 searchString = ''
 
 
+def searchTree():
+    global searchString
+    global tree
+    query = searchString
+    selections = []
+    for child in tree.get_children():
+        if query.lower() in tree.item(child)['text'].lower():   # compare strings in  lower cases.
+            print(tree.item(child)['text'])
+            selections.append(child)
+    print(selections)
+    tree.selection_set(selections)
+
 
 def searchTheTable() :
     global result
     global filteredResult
     global searchString
+    global path
 
     length = len(result)
     
     filteredResult = []
     counter = 0
 
+    print('----------------------------------')
     while counter < length : 
         #print(result[counter].find(searchString))
         if( (result[counter].lower()).find(searchString.lower()) != -1 ) :
+            print(result[counter])
             filteredResult.append(result[counter])
         else :
             pass
         counter += 1
+    print('----------------------------------')
     
-    result = filteredResult
-    return result
+
+    #result = filteredResult
+    return filteredResult
 
 
 
@@ -244,8 +266,11 @@ def return_pressed(event):
         return
     
 
-    searchTheTable()
+    result = searchTheTable()
 
+    #searchTree()
+    
+    #print(result)
     add_data()
      
 
