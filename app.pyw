@@ -58,7 +58,7 @@ style = ttk.Style()
 style.configure("Treeview", font=(None, fontSize))
 style.configure('Treeview', rowheight=rowHeight)
 #style.theme_use("step")
-
+style.map('Treeview',  background=[('selected', 'invalid' , '#d6ccc2')] , foreground=[('selected', 'invalid' , 'black')])
 #('aqua', 'step', 'clam', 'alt', 'default', 'classic')
 
 topFrame = ttk.Frame(root )
@@ -70,11 +70,17 @@ vsb = ttk.Scrollbar(orient="vertical",command=tree.yview)
 vsb.pack( side=tkinter.RIGHT , fill='both' )
 tree.configure(yscrollcommand=vsb.set)
 
+
+
+
+
+
 def OnDoubleClick(event):
     global searchString
     global result
     global filteredResult
     global backUpResult
+    global tree 
 
     result = backUpResult
 
@@ -192,9 +198,6 @@ def add_data() :
     tree.move('item4', 'item1', 'end')
     """
     
-    
-
-    style.map('Treeview',  background=[('selected', '#d6ccc2')] , foreground=[('selected', 'black')])
 
     counter = 0
     while counter < length :
@@ -344,6 +347,8 @@ search.pack(fill="both")
 #tree.heading('#0', text='', anchor=tk.W)
 #tree.bind("<Double-1>", OnDoubleClick)
 tree.bind("<Double-1>", OnDoubleClick)
+
+
 
 
 
