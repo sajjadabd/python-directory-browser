@@ -80,11 +80,11 @@ def OnDoubleClick(event):
 
     item = tree.selection()
     index = item[0]
-    print(index)
+    #print(index)
     searchString = index
     path = searchTheTable()
     path = path[0].replace("/" , "\\")
-    print(path)
+    #print(path)
     subprocess.Popen(f"explorer /select, \"{path}\"")
     #print("you clicked on", tree.item(i, "values"))
 
@@ -133,7 +133,7 @@ def checkToSeeIfThereIsParents(parentArray , theIndex , currentIndex , parrantIn
         return
     else :
         try :
-            print('try : ' , f'{parentArray[parrantIndex]}' , parentArray[currentIndex] , currentIndex , parrantIndex )
+            #print('try : ' , f'{parentArray[parrantIndex]}' , parentArray[currentIndex] , currentIndex , parrantIndex )
             checkToSeeIfThereIsParents(parentArray , theIndex - 1 , currentIndex - 1 , parrantIndex - 1 )
             tree.insert( parentArray[parrantIndex], tk.END, iid = parentArray[currentIndex] , text=parentArray[currentIndex], open=False , tags = (currentIndex) )
             tree.tag_configure( theIndex-1 , background = backgroundColors[theIndex-1] , foreground = foregroundColors[theIndex-1])
@@ -219,12 +219,20 @@ def fetchAllFilesFromPath() :
     global path
     global backUpResult
 
-    search.delete(0,tkinter.END)
-    result = glob.glob(path + '/**/*', recursive=True)
-    #print(result)
-    add_data()
-    backUpResult = result
-    label.config(text=(path + f" ({len(result)} files)"))
+    #print(path)
+
+    if( path.strip() == '') :
+        return
+
+    try :
+        search.delete(0,tkinter.END)
+        result = glob.glob(path + '/**/*', recursive=True)
+        #print(result)
+        add_data()
+        backUpResult = result
+        label.config(text=(path + f" ({len(result)} files)"))
+    except : 
+        pass
 
 def openfile():
     global backUpResult
@@ -263,9 +271,9 @@ def searchTree():
     selections = []
     for child in tree.get_children():
         if query.lower() in tree.item(child)['text'].lower():   # compare strings in  lower cases.
-            print(tree.item(child)['text'])
+            #print(tree.item(child)['text'])
             selections.append(child)
-    print(selections)
+    #print(selections)
     tree.selection_set(selections)
 
 
@@ -280,16 +288,16 @@ def searchTheTable() :
     filteredResult = []
     counter = 0
 
-    print('----------------------------------')
+    #print('----------------------------------')
     while counter < length : 
         #print(result[counter].find(searchString))
         if( (result[counter].replace(path , '').lower()).find(searchString.lower()) != -1 ) :
-            print(result[counter])
+            #print(result[counter])
             filteredResult.append(result[counter])
         else :
             pass
         counter += 1
-    print('----------------------------------')
+    #print('----------------------------------')
     
 
     #result = filteredResult
