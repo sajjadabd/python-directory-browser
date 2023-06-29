@@ -50,6 +50,7 @@ root.geometry('500x400')
 root.rowconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
 
+
 rowHeight = 22
 fontSize = 11
 
@@ -212,6 +213,19 @@ def add_data() :
     # tree.move(5, 0, 0)
     # tree.move(6, 0, 1)
 
+def fetchAllFilesFromPath() :
+    global search
+    global result
+    global path
+    global backUpResult
+
+    search.delete(0,tkinter.END)
+    result = glob.glob(path + '/**/*', recursive=True)
+    #print(result)
+    add_data()
+    backUpResult = result
+    label.config(text=(path + f" ({len(result)} files)"))
+
 def openfile():
     global backUpResult
     global result
@@ -222,12 +236,7 @@ def openfile():
     if( path.strip() == '' ) :
         pass
     else :
-        search.delete(0,tkinter.END)
-        result = glob.glob(path + '/**/*', recursive=True)
-        #print(result)
-        add_data()
-        backUpResult = result
-        label.config(text=(path + f" ({len(result)} files)"))
+        fetchAllFilesFromPath()
         #return filedialog.askopenfilename()
     
 
@@ -338,5 +347,42 @@ tree.bind("<Double-1>", OnDoubleClick)
 #tree.pack( anchor=tk.NW , fill="y" , expand=True)
 tree.pack( fill="both" , expand=True)
 
+
+
+
+menubar = tkinter.Menu(root)
+root.config(menu=menubar)
+
+file_menu = tkinter.Menu(menubar , tearoff=0)
+
+file_menu.add_command(
+    label='Exit',
+    command=root.destroy,
+)
+
+options_menu = tkinter.Menu(menubar , tearoff=0)
+
+options_menu.add_command(
+    label='Refresh',
+    command=fetchAllFilesFromPath,
+)
+
+menubar.add_cascade(
+    label="File",
+    menu=file_menu,
+)
+
+
+menubar.add_cascade(
+    label="Options",
+    menu=options_menu,
+)
+
+
+
+
 # run the app
 root.mainloop()
+
+
+
