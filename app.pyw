@@ -194,7 +194,7 @@ def add_data() :
     
     
 
-    style.map('Treeview',  background=[('selected', 'orange')] , foreground=[('selected', 'black')])
+    style.map('Treeview',  background=[('selected', '#d6ccc2')] , foreground=[('selected', 'black')])
 
     counter = 0
     while counter < length :
@@ -332,7 +332,7 @@ def return_pressed(event):
     add_data()
      
 
-sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
+#sv.trace("w", lambda name, index, mode, sv=sv: callback(sv))
 #create search bar
 search = ttk.Entry(root  , font=("Calibri",12))
 #search.bind('<Return>', return_pressed)
